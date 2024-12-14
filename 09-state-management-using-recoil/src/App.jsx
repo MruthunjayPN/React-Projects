@@ -1,4 +1,5 @@
-import { countatom } from './store/atoms/count'
+import { countatom, evenSelector } from './store/atoms/count'
+import { useMemo } from 'react';
 import { RecoilRoot, useRecoilValue, useSetRecoilState } from 'recoil'
 
 function App() {
@@ -23,9 +24,28 @@ function Count(){
 }
 function CountRenderer(){
   const count = useRecoilValue(countatom)
-  return <div>{count}</div>
+  return <div>
+    <b>{count}</b>
+    <EventCountRenderer/>
+  </div>
 }
 
+//this is added to show how we can use selectors instead of below logic
+function EventCountRenderer(){
+  // const count = useRecoilValue(countatom)
+  // //study why usememo is used here
+  // const isEven =useMemo (() => {
+  //   return count%2 == 0
+  // }, [count] )
+  // return <div>
+  //   <p>{ isEven? "it is even" :"it is odd"}</p>
+  // </div>
+
+  const isEven = useRecoilValue(evenSelector)
+  return <div>
+    <p>{isEven? "it is even" :"it is odd"}</p>
+  </div>
+}
 function Buttons(){
   console.log("buttons re-rendered");
   
